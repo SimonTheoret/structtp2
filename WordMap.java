@@ -25,12 +25,12 @@ public class WordMap<K,V> extends Maps<K,V> {
     }
     public V put(K key, V value){
         MapEntry<K,V> entry = new MapEntry<K, V>(key, value);
-        for (int i = key.hashCode(); i < size(); i++){
-            if (table[i] == null || table[i] == DEFUNCT){
+        for (int i = key.hashCode(); i < size(); i++){ // rightmost part of array
+            if (table[i] == null || table[i] == DEFUNCT){ //
                 table[i] = new MapEntry<K,V>(key, value);
             }
             if (table[i] == entry){
-                
+
             }
         }
     }
