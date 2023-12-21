@@ -84,6 +84,7 @@ public class MyMap<K,V> extends Maps<K,V> {
 
         // end with the left index
         for (int i = 0; i < this.hashfunc(key); i++) {
+            System.out.println("GOING THE OTHER SIDE");
             MapEntry<K,V> element = table.get(i);
             if (element == DEFUNCT ) { // change element if defunct
 
