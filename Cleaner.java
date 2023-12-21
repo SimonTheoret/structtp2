@@ -4,12 +4,13 @@ import java.io.FileReader;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
 import java.util.Properties;
-
+import java.util.ArrayList;
 public class Cleaner {
-    public static void go() {
+    public static MyMap<File, String> sendStrings() {
         String dir = "./dataset";
         File folder = new File(dir);
         File[] listOfFiles = folder.listFiles();
+        MyMap<File, String> map = new MyMap(100);
         for (File file : listOfFiles){
             if(file.isFile()) {
                 try {
@@ -51,12 +52,14 @@ public class Cleaner {
                             clean the text.*/
 
                                     /*in the following you can continue your own implementation*/
-                    System.out.println(str);
+                    //System.out.println(str);
+                    map.put(file, str);
                 }
                 catch (Exception e){
-                    System.out.println( e);
+                    System.out.println(e);
                 }
             }
         }
+        return map;
     }
 }
