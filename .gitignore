@@ -1,3 +1,5 @@
 *.zip
 *.jar
 .projectile
+*.org
+*.pdf
