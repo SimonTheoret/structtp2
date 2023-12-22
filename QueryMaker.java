@@ -7,6 +7,7 @@ import java.util.Scanner;
 // This class has the role of parsing the queries and calling the right functions for the queries.
 public class QueryMaker {
     ArrayList<String> queries;
+    ArrayList<String> output;
     Corrector corrector;
 
     // Default constructor
@@ -43,7 +44,7 @@ public class QueryMaker {
             if (rawQuery.charAt(0) == 's') {
                 return new SearchQuery(rawQuery, corr);
             } else {
-                System.out.println("Error, wrong query encoutered");
+                System.out.println("Error, wrong query encountered");
                 System.out.println(rawQuery);
                 return null;
             }
