@@ -35,7 +35,7 @@ public abstract class Maps<K,V> implements Map<K,V> {
     }
     // table containing the entries
     protected ArrayList<MapEntry<K,V>> table;
-    protected MapEntry<K,V> DEFUNCT = new MapEntry<>( null, null ); // value left for removed entries
+    protected MapEntry<K,V> DEFUNCT = new MapEntry<>( null, null ); // value left for empty entries
     int capacity; // capacity of table
     public int size() {
         int count = 0;

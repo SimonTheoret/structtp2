@@ -1,4 +1,5 @@
 import java.util.Map;
+import java.lang.Math;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,16 @@ public class MyMap<K,V> extends Maps<K,V> {
 
     //Returns true if MyMap contains the key
     public boolean containsKey(Object key) {
-        return table.contains(key);
+        boolean res;
+        for (MapEntry<K,V> e: table){
+            K nk = e.getKey();
+            res = (nk == null ? key == nk : nk.equals(key));
+            if (res){
+                return true;
+            }
+        }
+        return false;
+        //return table.contains(key);
     }
 
     // This method returns the index in the table of the key. It first looks at the right part of the array
@@ -20,20 +30,20 @@ public class MyMap<K,V> extends Maps<K,V> {
     protected int getIndex(Object key){
         for (int i = this.hashfunc(key); i < capacity; i++) { // rightmost part of array
             MapEntry<K,V> element = table.get(i);
-            if (element == DEFUNCT) { //change value of this entry if found
+            if (element.getKey().equals(key)  ) { //change value of this entry if found
                 return i;
                 }
-            if (element == DEFUNCT){ //If the next position is free and was never taken, returns -1
+            if (element.equals( DEFUNCT)){ //If the next position is free and was never taken, returns -1
                 return -1;
             }
         }
         // ends with the left index
         for (int i = 0; i < this.hashfunc(key); i++) {
             MapEntry<K,V> element = table.get(i);
-            if (element.getKey() == key) { //change value of this entry if found
+            if (element.getKey().equals(key)) { //change value of this entry if found
                 return i;
                 }
-            if (element == null){ // If the next position is free and was never taken, returns -1
+            if (element.equals(DEFUNCT)){ // If the next position is free and was never taken, returns -1
                 return -1;
             }
         }
@@ -43,7 +53,7 @@ public class MyMap<K,V> extends Maps<K,V> {
     //Returns true if MyMap contains the value
     public boolean containsValue(Object value) {
         for (MapEntry<K, V> entry : table) {
-            if (value == entry.getValue()) {
+            if (value.equals(entry.getValue()) ) {
                 return true;
             }
         }
@@ -56,12 +66,13 @@ public class MyMap<K,V> extends Maps<K,V> {
         if (i < 0){
             return null;
         }
-        return table.get(i).getValue();
+        MapEntry<K,V> entry = table.get(i);
+        return entry.getValue();
     }
 
     // Returns the position (compressed hash code) of a key.
     protected int hashfunc(Object key) {
-        return key.hashCode() % capacity; //Compression + hashcode
+        return Math.abs(key.hashCode()) % capacity; //Compression + hashcode
     }
 
     // Insert the value at the key position;
@@ -70,23 +81,22 @@ public class MyMap<K,V> extends Maps<K,V> {
         // getIndex is not appropriate here
         for (int i = this.hashfunc(key); i < capacity; i++) { // rightmost part of array
             MapEntry<K,V> element = table.get(i);
-            if (element == DEFUNCT ) { // change element if defunct
+            if (element.equals(DEFUNCT)) { // change element if defunct
                 V old = table.set(i, new MapEntry<>(key, value)).getValue();
                 if (factor() > 0.75){ // resize condition
                     resize();
                 }
                 return old;
             }
-            if (element.getKey() == key) { //if is the same key, replace the value
+            if (element.getKey().equals(key)) { //if is the same key, replace the value
                 return element.setValue(value);
             }
         }
 
         // end with the left index
         for (int i = 0; i < this.hashfunc(key); i++) {
-            System.out.println("GOING THE OTHER SIDE");
             MapEntry<K,V> element = table.get(i);
-            if (element == DEFUNCT ) { // change element if defunct
+            if (element.equals(DEFUNCT)) { // change element if defunct
 
                 V old = table.set(i, new MapEntry<>(key, value)).getValue();
                 if (factor() > 0.75 ){ // resize condition
@@ -95,11 +105,12 @@ public class MyMap<K,V> extends Maps<K,V> {
                 }
                 return old;
             }
-            if (element.getKey() == key) { //if is the same key, replace the value
+            if (element.getKey().equals(key)) { //if is the same key, replace the value
                 return element.setValue(value);
             }
         }
-        System.out.println("ERROR: Array is full!");
+        System.out.println("ERROR: Array is full!");// cannot be reached, (normally)
+        System.out.println(factor());// cannot be reached, (normally)
         return null; // cannot be reached, (normally)
     }
     // Remove the mapping key. It lefts a DEFUNCT entry in its place.
@@ -113,7 +124,7 @@ public class MyMap<K,V> extends Maps<K,V> {
         return old;
     }
     // Increase the capacity of the array
-    // It also reashes the newly created table
+    // It also reaches the newly created table
     protected void resize(){
         table.ensureCapacity(capacity * 2 +1);
         this.capacity = capacity * 2 + 1;
@@ -164,4 +175,5 @@ public class MyMap<K,V> extends Maps<K,V> {
         }
         return set;
     }
+    public String toString() { return table.toString();}
 }
