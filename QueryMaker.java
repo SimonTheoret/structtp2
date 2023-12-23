@@ -52,7 +52,7 @@ public class QueryMaker {
         }
     }
 
-    // Search queries with many words
+    // Search queries with possibly many words
     protected class SearchQuery extends Query {
         ArrayList<String> words;
 
@@ -67,6 +67,9 @@ public class QueryMaker {
                 }
                 counter += 1;
             }
+        }
+        protected void go(){
+            //this.out =
         }
     }
 
